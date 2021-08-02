@@ -12,28 +12,17 @@ import java.nio.IntBuffer;
  * @description:
  */
 public class BufferUtil {
-    public static FloatBuffer mBuffer;
-    public static FloatBuffer floatToBuffer(float[] a){
-        //先初始化buffer，数组的长度*4，因为一个float占4个字节
-        ByteBuffer mbb = ByteBuffer.allocateDirect(a.length*4);
-        //数组排序用nativeOrder
-        mbb.order(ByteOrder.nativeOrder());
-        mBuffer = mbb.asFloatBuffer();
-        mBuffer.put(a);
-        mBuffer.position(0);
-        return mBuffer;
+    public static FloatBuffer floatToBuffer(float[] input) {
+        FloatBuffer output = ByteBuffer.allocateDirect(input.length * 4)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer().put(input);
+        output.position(0);
+        return output;
     }
 
-    public static IntBuffer intToBuffer(int[] a){
-
-        IntBuffer intBuffer;
-        //先初始化buffer，数组的长度*4，因为一个float占4个字节
-        ByteBuffer mbb = ByteBuffer.allocateDirect(a.length*4);
-        //数组排序用nativeOrder
-        mbb.order(ByteOrder.nativeOrder());
-        intBuffer = mbb.asIntBuffer();
-        intBuffer.put(a);
-        intBuffer.position(0);
-        return intBuffer;
+    public static IntBuffer intToBuffer(int[] input) {
+        IntBuffer output = ByteBuffer.allocateDirect(input.length * 4)
+                .order(ByteOrder.nativeOrder()).asIntBuffer().put(input);
+        output.position(0);
+        return output;
     }
 }

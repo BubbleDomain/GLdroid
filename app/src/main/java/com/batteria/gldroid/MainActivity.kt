@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.batteria.gldroid.base.Item
 import com.batteria.gldroid.base.ItemAdapter
 import com.batteria.gldroid.base.OpenglActivity
-import com.batteria.gldroid.render.RectRender
-import com.batteria.gldroid.render.TriggerRender
+import com.batteria.gldroid.render.RectangleRender
+import com.batteria.gldroid.render.TriangleRender
+import com.batteria.gldroid.render.TriangleVAORender
 
 /**
  * @author: yaobeihaoyu
@@ -19,10 +20,14 @@ import com.batteria.gldroid.render.TriggerRender
  */
 class MainActivity : AppCompatActivity() {
     private fun initRenders() {
-        Renders.init(mapOf(
-            TriggerRender.TAG to RenderData(R.drawable.triangle, TriggerRender::class.java),
-            RectRender.TAG to RenderData(R.drawable.square, RectRender::class.java)
-        ))
+        Renders.init(
+            mapOf(
+                TriangleRender.TAG to RenderData(R.drawable.triangle, TriangleRender::class.java),
+                TriangleVAORender.TAG to
+                    RenderData(R.drawable.triangle, TriangleVAORender::class.java),
+                RectangleRender.TAG to RenderData(R.drawable.square, RectangleRender::class.java)
+            )
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
