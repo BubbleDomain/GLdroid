@@ -2,7 +2,13 @@ package com.batteria.gldroid.utils
 
 import android.opengl.GLES30.*
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
+import java.nio.Buffer
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 /**
  * @author: yaobeihaoyu
@@ -10,7 +16,7 @@ import java.io.ByteArrayOutputStream
  * @since: 2021/8/2
  * @description:
  */
-object GLUtils: Logger {
+object GLUtils : Logger {
     fun loadProgramFromAssets(
         vsName: String?,
         fsName: String?,
@@ -21,10 +27,21 @@ object GLUtils: Logger {
         return createProgram(vertexSource, fragmentSource)
     }
 
+    fun getImageBuffer(fileName: String, resources: Resources): BitmapBufferData {
+        // 加载纹理
+        val bitmapSource = BufferedInputStream(resources.assets.open(fileName)).readBytes()
+        val bitmapData = BitmapFactory.decodeByteArray(bitmapSource, 0, bitmapSource.size)
+        val bitmapBuffer = ByteBuffer.allocateDirect(bitmapData.width * bitmapData.height * 4)
+            .order(ByteOrder.nativeOrder())
+        bitmapData.copyPixelsToBuffer(bitmapBuffer)
+
+        return BitmapBufferData(bitmapData, bitmapBuffer, bitmapData.width, bitmapData.height)
+    }
+
     fun checkGLError(op: String) {
         var error: Int
         while (glGetError().also { error = it } != GL_NO_ERROR) {
-            logError( "$op: glError $error")
+            logError("$op: glError $error")
             throw RuntimeException("$op: glError $error")
         }
     }
@@ -111,4 +128,15 @@ object GLUtils: Logger {
 
     override val logTag: String
         get() = "GLUtils"
+}
+
+data class BitmapBufferData(
+    val bitmapData: Bitmap,
+    val buffer: Buffer,
+    val width: Int,
+    val height: Int
+) {
+    fun recycle() {
+        bitmapData.recycle()
+    }
 }

@@ -1,6 +1,5 @@
 package com.batteria.gldroid.render
 
-import android.opengl.GLES20
 import android.opengl.GLES30.*
 import android.opengl.GLSurfaceView
 import com.batteria.gldroid.utils.BufferUtil
