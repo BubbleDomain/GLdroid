@@ -79,7 +79,6 @@ class TriangleAnoleRender : GLSurfaceView.Renderer, Logger {
     override fun onDrawFrame(gl: GL10?) {
         logInfo("onDrawFrame")
         glClear(GL_COLOR_BUFFER_BIT)
-        glClearColor(0f,0f,1f,1f)
         if (progress >= 1f) flag = -1
         if (progress <= 0f) flag = 1
         progress += step * flag

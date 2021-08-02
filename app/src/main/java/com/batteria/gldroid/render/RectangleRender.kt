@@ -91,7 +91,6 @@ class RectangleRender : GLSurfaceView.Renderer, Logger {
     override fun onDrawFrame(gl: GL10?) {
         logInfo("onDrawFrame")
         glClear(GL_COLOR_BUFFER_BIT)
-        glClearColor(1f,0f,0f,1f)
 
         glBindVertexArray(vao)
         glDrawElements(GLES20.GL_LINE_LOOP, 6, GL_UNSIGNED_INT, 0)
