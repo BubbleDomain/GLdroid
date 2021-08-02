@@ -9,6 +9,7 @@ import com.batteria.gldroid.base.Item
 import com.batteria.gldroid.base.ItemAdapter
 import com.batteria.gldroid.base.OpenglActivity
 import com.batteria.gldroid.render.RectangleRender
+import com.batteria.gldroid.render.TriangleAnoleRender
 import com.batteria.gldroid.render.TriangleRender
 import com.batteria.gldroid.render.TriangleVAORender
 
@@ -25,7 +26,9 @@ class MainActivity : AppCompatActivity() {
                 TriangleRender.TAG to RenderData(R.drawable.triangle, TriangleRender::class.java),
                 TriangleVAORender.TAG to
                     RenderData(R.drawable.triangle, TriangleVAORender::class.java),
-                RectangleRender.TAG to RenderData(R.drawable.square, RectangleRender::class.java)
+                RectangleRender.TAG to RenderData(R.drawable.square, RectangleRender::class.java),
+                TriangleAnoleRender.TAG to
+                    RenderData(R.drawable.triangle, TriangleAnoleRender::class.java)
             )
         )
     }
