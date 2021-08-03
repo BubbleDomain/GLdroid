@@ -22,15 +22,22 @@ import javax.microedition.khronos.opengles.GL10
 class TextureRockRender : GLSurfaceView.Renderer, Logger {
     private val vertices = floatArrayOf(
 //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-        0.8f,  0.4f, 0.0f,   1.0f, 0.0f, 0.0f,   7.0f, 7.0f,   // 右上
-        0.8f, -0.4f, 0.0f,   0.0f, 1.0f, 0.0f,   7.0f, 0.0f,   // 右下
-        -0.8f, -0.4f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
-        -0.8f,  0.4f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 7.0f    // 左上
+        0.8f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f, 7.0f, 7.0f,   // 右上
+        0.8f, -0.4f, 0.0f, 0.0f, 1.0f, 0.0f, 7.0f, 0.0f,   // 右下
+        -0.8f, -0.4f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,   // 左下
+        -0.8f, 0.4f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 7.0f    // 左上
     )
 
     private val indices = intArrayOf(
         0, 1, 3, // 第一个三角形
         1, 2, 3  // 第二个三角形
+    )
+
+    private val transformMatrix = floatArrayOf(
+        0f, -1f, 0f, 0f,
+        2f, 0f, 0f, 0f,
+        0f, 0f, 1f, 0f,
+        0f, 0f, 0f, 1f
     )
 
     private var vertexBuffer: FloatBuffer? = null
@@ -55,7 +62,8 @@ class TextureRockRender : GLSurfaceView.Renderer, Logger {
         indexBuffer = BufferUtil.intToBuffer(indices)
 
         val resources = ContextUtils.application?.resources ?: throw NullPointerException()
-        val data = GLUtils.loadProgramFromAssets("texture_rock_vs.glsl", "texture_rock_fs.glsl", resources)
+        val data =
+            GLUtils.loadProgramFromAssets("texture_rock_vs.glsl", "texture_rock_fs.glsl", resources)
         shaderProgram = data.program
         vertexShader = data.vertexShader
         fragmentShader = data.fragmentShader
@@ -93,6 +101,8 @@ class TextureRockRender : GLSurfaceView.Renderer, Logger {
         glEnableVertexAttribArray(2)
 
         initTexture()
+
+
     }
 
     private fun initTexture() {
@@ -132,12 +142,13 @@ class TextureRockRender : GLSurfaceView.Renderer, Logger {
         bufferData2.recycle()
         glGenerateMipmap(GL_TEXTURE_2D)
 
-        // todo: 需要对图片资源进行解析区分
 //        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bufferData.width, bufferData.height, 0, GL_RGB, GL_UNSIGNED_BYTE, bufferData.buffer)
 
         glUseProgram(shaderProgram)
         glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0)
         glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1)
+
+        GLES20.glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, false, BufferUtil.floatToBuffer(transformMatrix))
     }
 
 
@@ -148,10 +159,10 @@ class TextureRockRender : GLSurfaceView.Renderer, Logger {
     override fun onDrawFrame(gl: GL10?) {
         glClear(GL_COLOR_BUFFER_BIT)
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, texture1)
+        glActiveTexture(GL_TEXTURE1)
+        glBindTexture(GL_TEXTURE_2D, texture2)
 
         glUseProgram(shaderProgram)
         glBindVertexArray(vao)
