@@ -48,7 +48,7 @@ class TriangleAnoleRender : GLSurfaceView.Renderer, Logger {
         vertexBuffer = BufferUtil.floatToBuffer(vertices)
 
         val resources = ContextUtils.application?.resources ?: throw NullPointerException()
-        shaderProgram = GLUtils.loadProgramFromAssets("triangle_vs.glsl", "triangle_anole_fs.glsl", resources)
+        shaderProgram = GLUtils.loadProgramFromAssets("triangle_vs.glsl", "triangle_anole_fs.glsl", resources).program
         glUseProgram(shaderProgram)
 
         // 0. 创建VAO和VBO

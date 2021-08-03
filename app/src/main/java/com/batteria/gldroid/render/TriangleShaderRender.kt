@@ -42,7 +42,7 @@ class TriangleShaderRender : GLSurfaceView.Renderer, Logger {
         vertexBuffer = BufferUtil.floatToBuffer(vertices)
 
         val resources = ContextUtils.application?.resources ?: throw NullPointerException()
-        shaderProgram = GLUtils.loadProgramFromAssets("triangle_shader_vs.glsl", "triangle_shader_fs.glsl", resources)
+        shaderProgram = GLUtils.loadProgramFromAssets("triangle_shader_vs.glsl", "triangle_shader_fs.glsl", resources).program
         glUseProgram(shaderProgram)
 
         // 0. 创建VAO和VBO

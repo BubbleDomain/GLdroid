@@ -21,7 +21,7 @@ object GLUtils : Logger {
         vsName: String?,
         fsName: String?,
         resources: Resources
-    ): Int {
+    ): ShaderProgram {
         val vertexSource = loadFromAssetsFile(vsName, resources)
         val fragmentSource = loadFromAssetsFile(fsName, resources)
         return createProgram(vertexSource, fragmentSource)
@@ -31,7 +31,7 @@ object GLUtils : Logger {
         // 加载纹理
         val bitmapSource = BufferedInputStream(resources.assets.open(fileName)).readBytes()
         val bitmapData = BitmapFactory.decodeByteArray(bitmapSource, 0, bitmapSource.size)
-        val bitmapBuffer = ByteBuffer.allocateDirect(bitmapData.width * bitmapData.height * 4)
+        val bitmapBuffer = ByteBuffer.allocateDirect(bitmapData.byteCount)
             .order(ByteOrder.nativeOrder())
         bitmapData.copyPixelsToBuffer(bitmapBuffer)
 
@@ -49,14 +49,14 @@ object GLUtils : Logger {
     private fun createProgram(
         vertexSource: String?,
         fragmentSource: String?
-    ): Int {
+    ): ShaderProgram {
         val vertexShader = loadShader(GL_VERTEX_SHADER, vertexSource)
         if (vertexShader == 0) {
-            return 0
+            return ShaderProgram(0, 0, 0)
         }
         val fragShader = loadShader(GL_FRAGMENT_SHADER, fragmentSource)
         if (fragShader == 0) {
-            return 0
+            return ShaderProgram(0, 0, 0)
         }
         var program = glCreateProgram()
         if (program != 0) {
@@ -78,7 +78,7 @@ object GLUtils : Logger {
         } else {
             logError("glCreateProgram Failed: $program")
         }
-        return program
+        return ShaderProgram(program, vertexShader, fragShader)
     }
 
     private fun loadShader(
@@ -140,3 +140,5 @@ data class BitmapBufferData(
         bitmapData.recycle()
     }
 }
+
+data class ShaderProgram(val program: Int, val vertexShader: Int, val fragmentShader: Int)
