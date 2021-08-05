@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.batteria.gldroid.base.Item
 import com.batteria.gldroid.base.ItemAdapter
 import com.batteria.gldroid.base.OpenglActivity
+import com.batteria.gldroid.render.CubeRender
 import com.batteria.gldroid.render.RectangleRender
 import com.batteria.gldroid.render.Rock3DRender
 import com.batteria.gldroid.render.TextureRockRender
@@ -37,7 +38,9 @@ class MainActivity : AppCompatActivity() {
                 TextureRockRender.TAG to
                     RenderData(R.drawable.stone, TextureRockRender::class.java),
                 Rock3DRender.TAG to
-                    RenderData(R.drawable.stone, Rock3DRender::class.java)
+                    RenderData(R.drawable.stone, Rock3DRender::class.java),
+                CubeRender.TAG to
+                    RenderData(R.drawable.cube, CubeRender::class.java)
             )
         )
     }
